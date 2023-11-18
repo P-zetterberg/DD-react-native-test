@@ -1,6 +1,7 @@
 
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
+
 type Props = {
     item: {
         type: string;
@@ -15,6 +16,7 @@ const ListItem = ({item}:Props) => {
         <Text>{item.name}</Text>
         <Text>{item.type}</Text>
         <Text>$ {item.price}.00</Text>
+        
     </View>
   );
 };

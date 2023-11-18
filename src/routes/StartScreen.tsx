@@ -5,7 +5,7 @@ import { RootStackParamList } from '../../App';
 import { ListProvider } from '../contexts/ListContext';
 import { useList } from '../contexts/ListContext';
 import ListItem from '../components/ListItem';
-
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList,'Home'>;
 

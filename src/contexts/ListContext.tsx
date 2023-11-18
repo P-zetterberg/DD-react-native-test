@@ -10,6 +10,7 @@ interface ListContextType {
   list: Item[]; 
   addItemToList: (item: Item) => void; 
   updateItemInList: (item:Item, index:number) => void;
+  deleteItemFromList: (index:number) => void;
 }
 interface ListProviderProps {
   children: ReactNode;
@@ -23,6 +24,14 @@ const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
   const addItemToList = (item: Item) => {
     setList((prevList) => [...prevList, item]);
   };
+
+  const deleteItemFromList = (index:number) => {
+    setList((prevList) => {
+      const newList = [...prevList];
+      newList.splice(index, 1);
+      return newList;
+    });
+  };
   const updateItemInList = (updatedItem:Item, index:number) => {
     setList((prevList) => {
       const newList = [...prevList];
@@ -33,7 +42,7 @@ const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
     });
   };
   return (
-    <ListContext.Provider value={{ list, addItemToList, updateItemInList }}>
+    <ListContext.Provider value={{ list, addItemToList, updateItemInList, deleteItemFromList }}>
       {children}
     </ListContext.Provider>
   );

@@ -23,10 +23,9 @@ interface validationObj {
 // Pretty much a copy of NewProductScreen.tsx
 export default function NewProductScreen({navigation, route}: Props) {
     const {item:routeItem} = route.params
-    const name = routeItem.name
     const {index} = route.params
   //Context and item
-  const { updateItemInList, list } = useList();
+  const { updateItemInList, list, deleteItemFromList } = useList();
   const [item, setItem] = useState({type: routeItem.type, name: routeItem.name, price: routeItem.price});
   //Picker
   const [selectedType, setType] = useState(routeItem.type);
@@ -62,9 +61,14 @@ export default function NewProductScreen({navigation, route}: Props) {
 
     if(isNameUnique) {
         updateItemInList(item, index);
-      navigation.navigate('Home')
+        navigation.navigate('Home')
     } else alert('Name must be unique')
   };
+
+  const handleDeleteItem = () => {
+    deleteItemFromList(index)
+    navigation.navigate('Home')
+  }
   const nameValue = (value:string) => {
     validationObj.name = value.length > 0;
     setItem(prevState => ({
@@ -138,6 +142,10 @@ export default function NewProductScreen({navigation, route}: Props) {
             <Icon name="cancel" size={24} color="white" />
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={handleDeleteItem} style={styles.btn__delete}>
+            <Text style={[styles.btn__text, styles.text__save]}>Delete item</Text>
+            <Icon name="delete" size={24} color="white" />
+          </TouchableOpacity>
      </View>
     </SafeAreaView>
   );
@@ -188,6 +196,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+  },
+  btn__delete: {
+    backgroundColor: 'red',
+    padding: 8,
+    borderRadius: 8,
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   btn__text: {
     fontSize: 20,
