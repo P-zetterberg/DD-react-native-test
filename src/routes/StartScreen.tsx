@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, FlatList,ListRenderItem  } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, FlatList,ListRenderItem,TouchableOpacity    } from 'react-native';
 import Fab from '../components/fab';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
@@ -25,8 +25,10 @@ export default function StartScreen({navigation}: Props) {
   
     };
   
-    const renderItem: ListRenderItem<Item> = ({ item }) => (
+    const renderItem: ListRenderItem<Item> = ({ item, index },) => (
+      <TouchableOpacity onPress={() => navigation.navigate('EditProduct', { item, index })}>
       <ListItem item={item}/>
+      </TouchableOpacity>
     );
     
   return (
@@ -54,7 +56,7 @@ export default function StartScreen({navigation}: Props) {
       <FlatList
         data={list}
         renderItem={renderItem}
-        keyExtractor={(index) => index.toString()}
+        keyExtractor={(item,index) => index.toString()}
       /> }
       <Fab onPress={handleFabPress}/>
     </SafeAreaView>

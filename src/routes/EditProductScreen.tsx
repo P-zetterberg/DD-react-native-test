@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View , TouchableOpacity, TextInput} from 'react-native';
-import {useState} from 'react';
+import {useState, useEffect } from 'react';
 import { RootStackParamList } from '../../App';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useList } from '../contexts/ListContext';
@@ -14,50 +14,84 @@ RootStackParamList, "NewProduct"
 
 type Props = {
   navigation: ProfileScreenNavigationProp;
+  route: {params: {item: {type: string, name: string, price: string}, index: number}}
 }
 
 interface validationObj {
   [key: string]: boolean;
 }
-export default function NewProductScreen({navigation}: Props) {
-  const [item, setItem] = useState({type: "", name: "", price: ""});
-  const { addItemToList } = useList();
-  const [selectedType, setType] = useState("");
+// Pretty much a copy of NewProductScreen.tsx
+export default function NewProductScreen({navigation, route}: Props) {
+    const {item:routeItem} = route.params
+    const name = routeItem.name
+    const {index} = route.params
+  //Context and item
+  const { updateItemInList, list } = useList();
+  const [item, setItem] = useState({type: routeItem.type, name: routeItem.name, price: routeItem.price});
+  //Picker
+  const [selectedType, setType] = useState(routeItem.type);
   const [pickerFocused, setPickerFocused] = useState(false)
+
+  //Validation
   const [disabled, setDisabled] = useState(true)
-  const handleAddItem = () => {
-    addItemToList(item);  
-    navigation.navigate('Home')
-  };
+  const [priceError, setPriceError] = useState(false)
 
-  const updateValue = (key:string, value:string) => {
-    let min = 0;
-    let max = Number.MAX_SAFE_INTEGER;
-    if(value == 'integrated' || item.type == 'integrated') {
-      min = 1000;
-      max = 2600;
-    }
-    if(key === 'type') {
-      setType(value)
-    };
-    
-    if(key === 'price') validationObj[key] = Number(value) > min && Number(value) < max;
-    if(key !== 'price') validationObj[key] = value.length > 0;
-    setDisabled(true)
-
-    if(Object.values(validationObj).every(Boolean)) {
-      setDisabled(false)
-    } else setDisabled(true)
-    setItem(prevState => ({
-      ...prevState,
-      [key]: value,
-    }));
-  };
   let validationObj:validationObj = {
     name: item.name.length > 0,
     price: item.price.length > 0, 
     type: selectedType.length > 0
   }
+
+  useEffect(() => {
+    setPriceError(false)
+    priceValue(item.price)
+    if(selectedType == 'integrated') {
+      if(!validationObj.price) {
+        setPriceError(true)
+      } else setPriceError(false) 
+    }
+    setItem(prevState => ({
+      ...prevState,
+      ['type']: selectedType,
+    }))
+    checkValidation()
+  }, [selectedType, item.price]);
+  
+  const handleAddItem = () => {
+    const isNameUnique = list.every((obj, i) => i === index || obj.name !== item.name);
+
+    if(isNameUnique) {
+        updateItemInList(item, index);
+      navigation.navigate('Home')
+    } else alert('Name must be unique')
+  };
+  const nameValue = (value:string) => {
+    validationObj.name = value.length > 0;
+    setItem(prevState => ({
+      ...prevState,
+      ['name']: value,
+    }))
+  }
+  const priceValue = (value:string) => {
+    let min = 0
+    let max = Number.MAX_SAFE_INTEGER
+   if(selectedType == 'integrated') {
+    min = 1000
+    max = 2600
+   }
+  
+    validationObj.price = Number(value) > min && Number(value) < max;
+    setItem(prevState => ({
+      ...prevState,
+      ['price']: value,
+    }))
+  }
+
+  const checkValidation = () => {
+    if(Object.values(validationObj).every(Boolean)) {
+      setDisabled(false)
+    } else setDisabled(true)
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -68,22 +102,25 @@ export default function NewProductScreen({navigation}: Props) {
       <TextInput
          style={styles.input}
           value={item.name}
-          onChangeText={val => updateValue('name', val)}
+          onChangeText={val => nameValue(val)}
           placeholder='Name'
         />
               <TextInput
          style={styles.input}
           value={item.price}
           keyboardType='numeric'
-          onChangeText={val => updateValue('price', val)}
+          onChangeText={val => priceValue(val)}
           placeholder='Price'
         />
+       {priceError &&  <Text style={{color: 'red'}}>
+          Pick a price between 1000 & 2600 for integrated products
+        </Text>}
         <View style={[styles.input ,styles.picker]}>
         <Picker
           onFocus={() => setPickerFocused(true)}
           onBlur={() => setPickerFocused(false)}
           selectedValue={selectedType}
-          onValueChange={val => updateValue('type', val)}>
+          onValueChange={val => setType(val)}>
           <Picker.Item  value='' label='Product Type' enabled={!pickerFocused} />
           <Picker.Item label="Peripheral" value="peripheral" />
           <Picker.Item label="Integrated" value="integrated" />

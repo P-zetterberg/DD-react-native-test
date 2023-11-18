@@ -6,7 +6,6 @@ type Props = {
         type: string;
         name: string;
         price: string;
-        
     }
 }
 
@@ -15,7 +14,7 @@ const ListItem = ({item}:Props) => {
     <View style={styles.listItem}>
         <Text>{item.name}</Text>
         <Text>{item.type}</Text>
-        <Text>$ {item.price}</Text>
+        <Text>$ {item.price}.00</Text>
     </View>
   );
 };
