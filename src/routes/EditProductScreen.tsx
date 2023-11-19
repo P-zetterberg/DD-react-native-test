@@ -7,6 +7,7 @@ import { useList } from '../contexts/ListContext';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
+import { t } from '../services/t';
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
 RootStackParamList, "NewProduct"
@@ -101,23 +102,23 @@ export default function NewProductScreen({navigation, route}: Props) {
     <SafeAreaView style={styles.container}>
      <View style={{padding: 12}}>
      <Text style={styles.title}>
-        Edit product
+     {t('edit_product')}
       </Text>
       <TextInput
          style={styles.input}
           value={item.name}
           onChangeText={val => nameValue(val)}
-          placeholder='Name'
+          placeholder={t('name')}
         />
               <TextInput
          style={styles.input}
           value={item.price}
           keyboardType='numeric'
           onChangeText={val => priceValue(val)}
-          placeholder='Price'
+          placeholder={t('price')}
         />
        {priceError &&  <Text style={{color: 'red'}}>
-          Pick a price between 1000 & 2600 for integrated products
+          {t("price_error")}
         </Text>}
         <View style={[styles.input ,styles.picker]}>
         <Picker
@@ -125,25 +126,25 @@ export default function NewProductScreen({navigation, route}: Props) {
           onBlur={() => setPickerFocused(false)}
           selectedValue={selectedType}
           onValueChange={val => setType(val)}>
-          <Picker.Item  value='' label='Product Type' enabled={!pickerFocused} />
-          <Picker.Item label="Peripheral" value="peripheral" />
-          <Picker.Item label="Integrated" value="integrated" />
+          <Picker.Item  value='' label={t('product_type')} enabled={!pickerFocused} />
+          <Picker.Item label={t('peripheral')} value="peripheral" />
+          <Picker.Item label={t('integrated')} value="integrated" />
         </Picker>
         </View>
         <View style={styles.btn__container}>
           <TouchableOpacity onPress={handleAddItem} style={[styles.btn__primary, disabled ? styles.disabled : null]} disabled={disabled} >
-            <Text style={[styles.btn__text, styles.text__save]}>SAVE</Text>
+            <Text style={[styles.btn__text, styles.text__save]}>{t('save')}</Text>
             <Icon name="download" size={24} color="white" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() =>  navigation.navigate('Home')} style={styles.btn__secondary} >
             <Text style={styles.btn__text}>
-              CANCEL
+            {t('cancel')}
             </Text>
             <Icon name="cancel" size={24} color="white" />
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={handleDeleteItem} style={styles.btn__delete}>
-            <Text style={[styles.btn__text, styles.text__save]}>Delete item</Text>
+            <Text style={[styles.btn__text, styles.text__save]}>{t('delete_item')}</Text>
             <Icon name="delete" size={24} color="white" />
           </TouchableOpacity>
      </View>

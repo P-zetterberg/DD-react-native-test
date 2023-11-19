@@ -1,0 +1,15 @@
+{
+  "cancel": "AVBRYT",
+  "save": "SPARA",
+  "product_type": "Produkt typ",
+  "name": "Namn",
+  "price": "Pris",
+  "create_new_product": "Skapa ny produkt",
+  "edit_product": "Redigera produkt",
+  "no_products_yet": "Inga produkter ännu. Tryck på den gröna knappen för att lägga till en ny.",
+  "items": "Artiklar",
+  "delete_item": "Ta bort artikel",
+  "price_error": "Välj ett pris mellan 1000 & 2600 för integrerade produkter",
+  "integrated": "Integrerad",
+  "peripheral": "kringutrustning"
+}

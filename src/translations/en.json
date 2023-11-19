@@ -1,0 +1,15 @@
+{
+  "cancel": "CANCEL",
+  "save": "SAVE",
+  "product_type": "Product type",
+  "name": "Name",
+  "price": "Price",
+  "create_new_product": "Create new product",
+  "edit_product": "Edit product",
+  "no_products_yet": "You do not have any products. Press the green button below to add a new one",
+  "items": "items",
+  "delete_item": "Delete item",
+  "price_error": "Pick a price between 1000 & 2600 for integrated products",
+  "integrated": "Integrated",
+  "peripheral": "Peripheral"
+}

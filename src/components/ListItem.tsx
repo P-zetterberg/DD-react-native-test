@@ -1,6 +1,6 @@
 
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-
+import { t } from '../services/t';
 
 type Props = {
     item: {
@@ -14,7 +14,7 @@ const ListItem = ({item}:Props) => {
   return (
     <View style={styles.listItem}>
         <Text>{item.name}</Text>
-        <Text>{item.type}</Text>
+        <Text>{t(item.type)}</Text>
         <Text>$ {item.price}.00</Text>
         
     </View>

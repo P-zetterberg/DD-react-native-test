@@ -5,7 +5,7 @@ import { RootStackParamList } from '../../App';
 import { ListProvider } from '../contexts/ListContext';
 import { useList } from '../contexts/ListContext';
 import ListItem from '../components/ListItem';
-import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import { t } from '../services/t';
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList,'Home'>;
 
@@ -35,21 +35,20 @@ export default function StartScreen({navigation}: Props) {
     <ListProvider>
     <SafeAreaView style={styles.container}>
       <View style={styles.topSection}>
-        <Text style={styles.topText}>Items</Text>
+        <Text style={styles.topText}>{t('items')}</Text>
       </View>
 
       <View style={styles.listHeader}>
-        <Text>Name</Text>
-        <Text>Type</Text>
-        <Text>Price</Text>
+        <Text>{t('name')}</Text>
+        <Text>{t('product_type')}</Text>
+        <Text>{t('price')}</Text>
       </View>
      
    {list.length == 0 ?    
    <View style={styles.middleSection}>
         <View>
           <Text style={styles.middleText}>
-            You do not have any products.
-            Press the green button below to add a new one
+            {t('no_products_yet')}
           </Text>
         </View>
       </View> :  
